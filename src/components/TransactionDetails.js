@@ -14,7 +14,7 @@ var currentMonth = dt.getMonth() + 1;
 class TransactionDetails extends Component {
 
   constructor(props) {
-   
+
     super(props)
     this.state = {
       arr: [],
@@ -34,10 +34,8 @@ class TransactionDetails extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handlepassbook = this.handlepassbook.bind(this);
-    this.handleMonthlyDetails = this.handleMonthlyDetails.bind(this);
-    this.resetForm = this.resetForm.bind(this);
   }
+
 
   componentDidMount() {
 
@@ -56,20 +54,15 @@ class TransactionDetails extends Component {
     localStorage.getItem('totalExpense') && this.setState({
       totalExpense: JSON.parse(localStorage.getItem('totalExpense')),
     })
-
-   
   }
 
   ///////// handling the input details //////////
 
-  handleOnChange(event) {
+  handleOnChange = (event) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
 
-    // this.setState({
-    //   [name]:value
-    // })
     if (name === 'amount') {
       const regexOnlyNumbers = /^[0-9]+(\.[0-9]{1,2})?$/;
       if (event.target.value === '' || regexOnlyNumbers.test(event.target.value)) {
@@ -95,7 +88,6 @@ class TransactionDetails extends Component {
 
   ///////// handling the form submission //////////
   handleSubmit(event) {
-    console.log("handleSubmit NetAmount::" + this.state.netAmount); //0
 
     if (this.state.amount === '') {
       this.setState({
@@ -109,16 +101,6 @@ class TransactionDetails extends Component {
         snackType: 'error',
         snackMsg: 'Please Enter the description of the transaction!'
       })
-    } else if (this.state.selectedValue === 'expense') {
-      var balance;
-      balance = parseFloat(this.state.netAmount) - parseFloat(this.state.amount);
-
-      if (this.state.netAmount === 0 || balance <= 0)
-        this.setState({
-          msgOpen: true,
-          snackType: 'error',
-          snackMsg: 'Amount balance is low!'
-        })
     }
     else {
       var obj = {};
@@ -128,17 +110,27 @@ class TransactionDetails extends Component {
 
       if (this.state.selectedValue === 'expense') {
         amt = parseFloat(this.state.netAmount) - parseFloat(this.state.amount);
-        obj = {
-          'income': '',
-          'expense': this.state.amount,
-          'description': this.state.description,
-          'date': (this.state.date).toLocaleDateString(),
-          'amount': amt,
+        if (this.state.netAmount === 0 || amt <= 0) {
+          this.setState({
+            msgOpen: true,
+            snackType: 'error',
+            snackMsg: 'Amount balance is low!'
+          })
+          return;
         }
-        this.setState({
-          netAmount: amt
-        })
-        localStorage.setItem('totalAmount', this.state.netAmount)
+        else {
+          obj = {
+            'income': '',
+            'expense': this.state.amount,
+            'description': this.state.description,
+            'date': (this.state.date).toLocaleDateString(),
+            'amount': amt,
+          }
+          this.setState({
+            netAmount: amt
+          })
+          localStorage.setItem('totalAmount', amt)
+        }
       } else {
         amt = parseFloat(this.state.netAmount) + parseFloat(this.state.amount);
         obj = {
@@ -151,12 +143,7 @@ class TransactionDetails extends Component {
         this.setState({
           netAmount: amt
         })
-
-        // console.log("handleSubmit before setting NetAmount::" + this.state.netAmount); //0
-
-         localStorage.setItem('totalAmount', this.state.netAmount);
-
-        // console.log("handleSubmit after NetAmount::" + this.state.netAmount); //0
+        localStorage.setItem('totalAmount', amt);
       }
 
       this.state.arr.push(obj);
@@ -166,12 +153,10 @@ class TransactionDetails extends Component {
 
       if (this.state.selectedValue === 'expense' && month === currentMonth) {
         this.state.totalExpense.push(this.state.amount);
-
         localStorage.setItem('totalExpense', JSON.stringify(this.state.totalExpense))
       }
       else if (this.state.selectedValue === 'income' && month === currentMonth) {
         this.state.totalIncome.push(this.state.amount);
-
         localStorage.setItem('totalIncome', JSON.stringify(this.state.totalIncome))
       }
 
@@ -183,7 +168,7 @@ class TransactionDetails extends Component {
         snackMsg: 'Successfully recorded!'
       })
     }
-    event.preventDefault();
+     event.preventDefault();
   }
 
 
@@ -195,7 +180,7 @@ class TransactionDetails extends Component {
   }
 
   /////////// resetting the form data after succesfull form submission/////////
-  resetForm() {
+  resetForm = () => {
     this.setState({
       amount: '',
       description: '',
@@ -205,25 +190,20 @@ class TransactionDetails extends Component {
 
 
   //////// navigation to Passbook page /////////
-  handlepassbook() {
+  handlepassbook = () => {
     this.props.history.push({
       pathname: "/passbook",
     })
   }
 
-  handleMonthlyDetails(){
+  handleMonthlyDetails = () => {
     this.props.history.push({
       pathname: "/monthly_details",
     })
   }
 
   render() {
-    // console.log("render before set NetAmount::" + this.state.netAmount); //100
-    // localStorage.setItem('totalAmount', (this.state.netAmount))
-    // console.log("render after set NetAmount::" + this.state.netAmount); //100
-
     const { classes } = this.props;
-
     return (
       <React.Fragment>
         <CssBaseline />

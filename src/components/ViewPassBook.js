@@ -17,10 +17,6 @@ class ViewPassBook extends Component {
             snackType: "",
             open: false
         };
-        this.handleClear = this.handleClear.bind(this);
-        this.handleAddTransaction = this.handleAddTransaction.bind(this);
-        this.handleBackToHome = this.handleBackToHome.bind(this);
-     
     }
     componentDidMount() {
         localStorage.getItem('data') && this.setState({
@@ -28,7 +24,7 @@ class ViewPassBook extends Component {
         })
     }
 
-    handleClear() {
+    handleClear = () => {
 
         localStorage.clear();
 
@@ -39,13 +35,13 @@ class ViewPassBook extends Component {
         })
     }
 
-    handleAddTransaction() {
+    handleAddTransaction  = () => {
         this.props.history.push({
             pathname: "/transaction_details",
         })
     }
 
-    handleBackToHome() {
+    handleBackToHome = () => {
         this.props.history.push({
             pathname: "/home",
         })
@@ -128,7 +124,7 @@ class ViewPassBook extends Component {
 
                         ) : (
                                 <div style={{ textAlign: 'center' }}>
-                                    <h1>Record is Empty! Please enter some transactions details!</h1>
+                                    <h1>Record is Empty! Please add some transactions details!</h1>
                                     <Button
                                         type="submit"
                                         fullWidth
