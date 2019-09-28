@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, CssBaseline, TextField, Typography, Container } from '@material-ui/core';
+import SnackBar from './SnackBar';
 import { withStyles } from "@material-ui/core/styles";
 import styles from './styles';
 
@@ -12,65 +13,64 @@ class Login extends Component {
       errors: {
         username: '',
         password: ''
-      }
+      },
+      msgOpen: false,
+      snackMsg: "",
+      snackType: ""
     }
     this.handleLogin = this.handleLogin.bind(this);
     this.handleInputData = this.handleInputData.bind(this);
   }
 
+// setting the values of when user enters the details
   handleInputData(event) {
-    event.preventDefault();
-
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
-    let errors = this.state.errors;
-
-    const validUsernameRegex = RegExp(/[^A-Za-z0-9]/);
-
-    switch (name) {
-      case 'username':
-        errors.username = validUsernameRegex.test(value) ? 'Invalid Username' : (value.length < 5 ? 'Username must be 5 characters long!' : '');
-        break;
-      case 'password':
-        errors.password = (value.length < 8) ? 'Password must be 8 characters long!' : '';
-        break;
-      default:
-        break;
-    }
-
-     this.setState({ errors, [name]: value })
-
+    this.setState({ 
+      [name]: value
+     })
   }
 
 
+//login button
   handleLogin(event) {
-    event.preventDefault();
-
-    const validateForm = (errors) => {
-      let valid = true;
-      Object.values(errors).forEach(
-        (val) => val.length > 0 && (valid = false)
-      );
-      return valid;
-    }
-
-    if(validateForm(this.state.errors) && this.state.username === "x_deven733" && this.state.password === "123456") {
+    if (this.state.username === "deven733" && this.state.password === "12345678") {
       this.props.history.push({
-             pathname: "/home",
-           })
-    }else if ( this.state.username === '' || this.state.password === '') {
-         alert("Please fill up the details below!");
-       }
-  else{
-      alert('Invalid Form')
+        pathname: "/home",
+      })
+    } else if (this.state.username === '') {
+      this.setState({
+        msgOpen: true,
+        snackType: 'error',
+        snackMsg: 'Please Enter Your Username!'
+      })
+    } else if(this.state.password === ''){
+      this.setState({
+        msgOpen:true,
+        snackType:'error',
+        snackMsg:'Please Enter Your Password!'
+      })
     }
+    else{
+      this.setState({
+        msgOpen: true,
+        snackType: 'error',
+        snackMsg: 'Wrong Credentials! Please check your username/password!'
+      })
+    }
+    event.preventDefault();
+  }
+
+//handling close button of snackbar, resetting its initital state to false
+  snackClose = () => {
+    this.setState({
+      msgOpen: false
+    })
   }
 
   render() {
     const { classes } = this.props;
-    const { errors } = this.state;
     return (
       <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white' }}>
         <CssBaseline />
@@ -86,13 +86,10 @@ class Login extends Component {
               fullWidth
               label="Enter Your Username"
               name="username"
-              //type="text"
               autoComplete="username"
               value={this.state.username}
               onChange={this.handleInputData}
             />
-             {errors.username.length > 0 && <span className='error'>{errors.username}</span>} 
-
             <TextField
               variant="outlined"
               margin="normal"
@@ -105,7 +102,6 @@ class Login extends Component {
               value={this.state.password}
               onChange={this.handleInputData}
             />
-            {errors.password.length > 0 && <span className='error'>{errors.password}</span>} 
             <Button
               type="submit"
               fullWidth
@@ -118,11 +114,15 @@ class Login extends Component {
             </Button>
           </form>
         </div>
+        <SnackBar
+          type={this.state.snackType}
+          open={this.state.msgOpen}
+          message={this.state.snackMsg}
+          onClose={() => this.snackClose()}
+        />
       </Container>
-
     );
   }
-
 }
 
 export default withStyles(styles)(Login);

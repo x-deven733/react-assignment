@@ -9,7 +9,7 @@ import CurrentMonthDetails from './components/CurrentMonthDetails'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/my-finance-manager">
       <div className="App">
         <Switch>
           <Route path="/" exact component={Login}/>

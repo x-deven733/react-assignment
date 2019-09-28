@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {CssBaseline,AppBar,Toolbar,Paper,Typography,Button,Table,TableBody,TableCell,TableHead,TableRow} from '@material-ui/core';
+import { CssBaseline, AppBar, Toolbar, Paper, Typography, Button, Table, TableBody, TableCell, TableHead, TableRow, } from '@material-ui/core';
 import { withStyles } from "@material-ui/core/styles";
 import 'date-fns';
 import styles from './styles';
-
 
 
 
@@ -12,35 +11,33 @@ class ViewPassBook extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            datas: [],
+            datas: 0,
+            msgOpen: false,
+            snackMsg: "",
+            snackType: "",
+            open: false
         };
         this.handleClear = this.handleClear.bind(this);
         this.handleAddTransaction = this.handleAddTransaction.bind(this);
+        this.handleBackToHome = this.handleBackToHome.bind(this);
+     
     }
-    componentWillMount() {
+    componentDidMount() {
         localStorage.getItem('data') && this.setState({
             datas: JSON.parse(localStorage.getItem('data')),
-
         })
     }
 
-
-    componentDidMount() {
-
-        if (this.state.datas !== null) {
-            this.state.datas.map((item, index) => (
-                console.log(item.income)
-            ))
-        }
-
-
-        console.log("View pass book Data:::" + JSON.stringify(this.state.datas));
-    }
-
     handleClear() {
-        localStorage.clear();
-    }
 
+        localStorage.clear();
+
+        alert("Records Cleared!");
+
+        this.setState({
+           datas:0
+        })
+    }
 
     handleAddTransaction() {
         this.props.history.push({
@@ -48,12 +45,19 @@ class ViewPassBook extends Component {
         })
     }
 
+    handleBackToHome() {
+        this.props.history.push({
+            pathname: "/home",
+        })
+    }
+
     render() {
         const { classes } = this.props;
+
         return (
-            <React.Fragment>
+            <div className={classes.root}>
                 <CssBaseline />
-                <AppBar position="absolute" color="default" className={classes.appBar}>
+                <AppBar color="default" className={classes.appBar}>
                     <Toolbar>
                         <Typography variant="h6" color="inherit" noWrap>
                             Passbook
@@ -65,7 +69,7 @@ class ViewPassBook extends Component {
                         <Typography component="h1" variant="h4" align="center">
                             Records
                         </Typography>
-                        {this.state.datas !== "" ? (
+                        {this.state.datas !== 0 ? (
                             <div>
                                 <Table className={classes.table}>
                                     <TableHead>
@@ -89,8 +93,6 @@ class ViewPassBook extends Component {
                                         ))}
                                     </TableBody>
                                 </Table>
-
-
                                 <div style={{ flex: 'display', flexDirection: 'row', textAlign: 'center' }}>
                                     <Button
                                         type="submit"
@@ -112,19 +114,36 @@ class ViewPassBook extends Component {
                                     >
                                         Add Transaction
                                     </Button>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.passbooksubmit}
+                                        onClick={this.handleBackToHome}
+                                    >
+                                        Home
+                                    </Button>
                                 </div>
                             </div>
 
                         ) : (
                                 <div style={{ textAlign: 'center' }}>
-                                    <h1>Record Empty! Please enter some transactions details!</h1>
+                                    <h1>Record is Empty! Please enter some transactions details!</h1>
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.passbooksubmit}
+                                        onClick={this.handleAddTransaction}
+                                    >
+                                        Add Transaction
+                                    </Button>
                                 </div>
                             )}
-
                     </Paper>
-
                 </main>
-            </React.Fragment >
+            </div>
         );
     }
 }
@@ -148,8 +167,5 @@ const StyledTableRow = withStyles(theme => ({
         },
     },
 }))(TableRow);
-
-
-
 
 export default withStyles(styles)(ViewPassBook);

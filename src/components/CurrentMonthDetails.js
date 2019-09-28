@@ -58,7 +58,7 @@ class CurrentMonthDetails extends Component {
         return (
             <React.Fragment>
                 <CssBaseline />
-                <AppBar position="absolute" color="#50d07d" className={classes.appBar}>
+                <AppBar position="absolute" color="default" className={classes.appBar}>
                     <Toolbar>
 
                         <div className='titlebar-container'>

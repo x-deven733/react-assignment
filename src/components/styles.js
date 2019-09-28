@@ -6,6 +6,9 @@ const styles = (theme) => ({
             backgroundColor: '#50d07d',
         },
     },
+    root: {
+        flexGrow: 1,
+      },
     paper: {
         marginTop: theme.spacing(16),
         display: 'flex',
@@ -19,9 +22,12 @@ const styles = (theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    close: {
+        padding: theme.spacing(0.5),
+      },
     appBar: {
         position: 'relative',
-
+        width: "100%"
     },
     layout: {
         width: 'auto',
@@ -55,7 +61,7 @@ const styles = (theme) => ({
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-            width: "90%",
+            width: "100%",
             marginLeft: 'auto',
             marginRight: 'auto',
         },
@@ -72,7 +78,7 @@ const styles = (theme) => ({
     title: {
         fontSize: 14,
     },
-
+ 
 });
 
 export default styles;
