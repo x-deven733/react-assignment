@@ -47,6 +47,15 @@ class CurrentMonthDetails extends Component {
 
     }
 
+    componentDidMount(){
+        
+        if(!localStorage.getItem('username')){
+            this.props.history.push({
+              pathname: "/",
+            })
+          }
+    }
+
     render() {
 
         const { classes } = this.props;

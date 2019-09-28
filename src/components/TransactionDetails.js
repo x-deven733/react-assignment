@@ -17,6 +17,7 @@ class TransactionDetails extends Component {
 
     super(props)
     this.state = {
+      username:'',
       arr: [],
       income: '',
       expense: '',
@@ -38,6 +39,17 @@ class TransactionDetails extends Component {
 
 
   componentDidMount() {
+    if(localStorage.getItem('username')){
+      this.setState({
+        username: localStorage.getItem('username'),
+      })
+    }else{
+      this.props.history.push({
+        pathname: "/",
+      })
+    }
+
+    console.log("USERNAME::::" + localStorage.getItem('username'));
 
     localStorage.getItem('totalAmount') && this.setState({
       netAmount: JSON.parse(localStorage.getItem('totalAmount')),
@@ -202,6 +214,14 @@ class TransactionDetails extends Component {
     })
   }
 
+  handleLogout = () =>{
+    localStorage.removeItem('username')
+   this.props.history.push({
+     pathname:'/'
+   })
+  }
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -212,7 +232,8 @@ class TransactionDetails extends Component {
             <div className='titlebar-container'>
               <Typography variant="h6" noWrap>Transaction Details </Typography>
               <div className='titlebar-user-details'>
-                <div>x_deven733</div>
+              <button type='button' onClick={this.handleLogout}>Logout</button>
+                <div>{this.state.username}</div>
                 <div>Amount : ₹ {parseFloat(this.state.netAmount)}</div>
               </div>
             </div>

@@ -22,6 +22,12 @@ class ViewPassBook extends Component {
         localStorage.getItem('data') && this.setState({
             datas: JSON.parse(localStorage.getItem('data')),
         })
+
+        if(!localStorage.getItem('username')){
+            this.props.history.push({
+              pathname: "/",
+            })
+          }
     }
 
     handleClear = () => {
