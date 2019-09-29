@@ -3,7 +3,7 @@
 const styles = (theme) => ({
     '@global': {
         body: {
-            backgroundColor: '#50d07d',
+            backgroundColor: '#50d07d'
         },
     },
     root: {
@@ -21,6 +21,7 @@ const styles = (theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        width:'80%'
     },
     close: {
         padding: theme.spacing(0.5),
@@ -78,6 +79,9 @@ const styles = (theme) => ({
     title: {
         fontSize: 14,
     },
+    icon_style:{
+        margin: theme.spacing(1),
+    }
  
 });
 

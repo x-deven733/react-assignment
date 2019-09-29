@@ -4,6 +4,7 @@ import SnackBar from './SnackBar';
 import { withStyles } from "@material-ui/core/styles";
 import styles from './styles';
 
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -22,20 +23,21 @@ class Login extends Component {
     this.handleInputData = this.handleInputData.bind(this);
   }
 
-// setting the values of when user enters the details
+  // setting the values of when user enters the details
   handleInputData(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    this.setState({ 
+    this.setState({
       [name]: value
-     })
+    })
   }
 
 
-//login button
+  //login button
   handleLogin(event) {
     if (this.state.username === "deven733" && this.state.password === "12345678") {
+      localStorage.setItem('loggedIn', true);
       this.props.history.push({
         pathname: "/home",
       })
@@ -45,14 +47,14 @@ class Login extends Component {
         snackType: 'error',
         snackMsg: 'Please Enter Your Username!'
       })
-    } else if(this.state.password === ''){
+    } else if (this.state.password === '') {
       this.setState({
-        msgOpen:true,
-        snackType:'error',
-        snackMsg:'Please Enter Your Password!'
+        msgOpen: true,
+        snackType: 'error',
+        snackMsg: 'Please Enter Your Password!'
       })
     }
-    else{
+    else {
       this.setState({
         msgOpen: true,
         snackType: 'error',
@@ -62,65 +64,73 @@ class Login extends Component {
     event.preventDefault();
   }
 
-//handling close button of snackbar, resetting its initital state to false
+  //handling close button of snackbar, resetting its initital state to false
   snackClose = () => {
     this.setState({
       msgOpen: false
     })
   }
 
+  componentDidMount(){
+    if(localStorage.getItem('loggedIn')){
+      this.props.history.push({
+        pathname: "/home",
+      })
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
-      <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white' }}>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Typography component="h1" variant="h5" style={{ paddingTop: 10 }}>
-            Sign in
+        <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white' }}>
+          <CssBaseline />
+          <div className={classes.paper} >
+            <Typography component="h1" variant="h5" style={{ paddingTop: 10 }}>
+              Sign in
           </Typography>
-          <form className={classes.form} onSubmit={this.handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              label="Enter Your Username"
-              name="username"
-              autoComplete="username"
-              value={this.state.username}
-              onChange={this.handleInputData}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Enter Your Password"
-              type="password"
-              autoComplete="current-password"
-              value={this.state.password}
-              onChange={this.handleInputData}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={this.handleLogin}
-            >
-              Log In
+            <form className={classes.form} onSubmit={this.handleSubmit}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Enter Your Username"
+                name="username"
+                autoComplete="username"
+                value={this.state.username}
+                onChange={this.handleInputData}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Enter Your Password"
+                type="password"
+                autoComplete="current-password"
+                value={this.state.password}
+                onChange={this.handleInputData}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={this.handleLogin}
+              >
+                Log In
             </Button>
-          </form>
-        </div>
-        <SnackBar
-          type={this.state.snackType}
-          open={this.state.msgOpen}
-          message={this.state.snackMsg}
-          onClose={() => this.snackClose()}
-        />
-      </Container>
+            </form>
+          </div>
+          <SnackBar
+            type={this.state.snackType}
+            open={this.state.msgOpen}
+            message={this.state.snackMsg}
+            onClose={() => this.snackClose()}
+          />
+        </Container>
     );
   }
 }

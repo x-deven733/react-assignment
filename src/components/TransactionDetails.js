@@ -39,18 +39,7 @@ class TransactionDetails extends Component {
 
 
   componentDidMount() {
-    if(localStorage.getItem('username')){
-      this.setState({
-        username: localStorage.getItem('username'),
-      })
-    }else{
-      this.props.history.push({
-        pathname: "/",
-      })
-    }
-
-    console.log("USERNAME::::" + localStorage.getItem('username'));
-
+    
     localStorage.getItem('totalAmount') && this.setState({
       netAmount: JSON.parse(localStorage.getItem('totalAmount')),
     })
@@ -75,19 +64,24 @@ class TransactionDetails extends Component {
     const value = target.value;
     const name = target.name;
 
-    if (name === 'amount') {
-      const regexOnlyNumbers = /^[0-9]+(\.[0-9]{1,2})?$/;
-      if (event.target.value === '' || regexOnlyNumbers.test(event.target.value)) {
-        this.setState({
-          [name]: value
-        })
-      }
-    }
-    else {
+    
       this.setState({
         [name]: value
       })
-    }
+    
+    // if (name === 'amount') {
+    //   const regexOnlyNumbers = /^[0-9]+(\.[0-9]{1,2})?$/;
+    //   if (event.target.value === '' || regexOnlyNumbers.test(event.target.value)) {
+    //     this.setState({
+    //       [name]: value
+    //     })
+    //   }
+    // }
+    // else {
+    //   this.setState({
+    //     [name]: value
+    //   })
+    // }
     event.preventDefault();
   }
 
@@ -214,14 +208,6 @@ class TransactionDetails extends Component {
     })
   }
 
-  handleLogout = () =>{
-    localStorage.removeItem('username')
-   this.props.history.push({
-     pathname:'/'
-   })
-  }
-
-
   render() {
     const { classes } = this.props;
     return (
@@ -232,7 +218,6 @@ class TransactionDetails extends Component {
             <div className='titlebar-container'>
               <Typography variant="h6" noWrap>Transaction Details </Typography>
               <div className='titlebar-user-details'>
-              <button type='button' onClick={this.handleLogout}>Logout</button>
                 <div>{this.state.username}</div>
                 <div>Amount : ₹ {parseFloat(this.state.netAmount)}</div>
               </div>
@@ -263,6 +248,8 @@ class TransactionDetails extends Component {
                   name="amount"
                   label="Enter Amount"
                   fullWidth
+                  type='number'
+                  //placeholder = 'Enter Amount'
                   autoComplete="Enter Amount"
                   value={this.state.amount}
                   onChange={this.handleOnChange}

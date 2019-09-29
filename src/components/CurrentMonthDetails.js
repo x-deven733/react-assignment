@@ -17,15 +17,14 @@ class CurrentMonthDetails extends Component {
             netExpense: ''
         };
     }
-
-    componentWillMount() {
-        var netincome = 0;
+    
+    componentDidMount(){
+          var netincome = 0;
         var netexpense = 0;
         if (localStorage.getItem('totalIncome') !== null) {
 
             var arr1 = JSON.parse(localStorage.getItem('totalIncome'))
             for (var i in arr1) {
-              
                 netincome = netincome + parseInt(arr1[i])
             }
         }
@@ -44,26 +43,10 @@ class CurrentMonthDetails extends Component {
         this.setState({
             netExpense: netexpense
         })
-
-    }
-
-    componentDidMount(){
-        
-        if(!localStorage.getItem('username')){
-            this.props.history.push({
-              pathname: "/",
-            })
-          }
     }
 
     render() {
-
         const { classes } = this.props;
-
-        console.log("TOTAL INCOME::::" + this.state.totalIncome);
-
-        console.log("TOTAL EXPENSE::::" + this.state.totalExpense);
-
         return (
             <React.Fragment>
                 <CssBaseline />
