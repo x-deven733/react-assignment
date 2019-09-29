@@ -9,6 +9,14 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 
 class Home extends Component {
 
+    componentDidMount(){
+        if(!localStorage.getItem('loggedIn')){
+            this.props.history.push({
+                pathname: "/",
+            })
+        }
+    }
+
     handleTransaction = () => {
         this.props.history.push({
             pathname: "/transaction_details",
@@ -27,6 +35,13 @@ class Home extends Component {
         })
     }
 
+    handleLogout = () => {
+        localStorage.removeItem('loggedIn');
+       this.props.history.push({
+           pathname:"/"
+       })
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -36,6 +51,7 @@ class Home extends Component {
                     <Toolbar>
                         <div className='titlebar-container'>
                             <Typography variant="h6" noWrap>Home</Typography>
+                            <Button className={classes.textbutton} onClick={this.handleLogout}>Logout</Button>
                         </div>
                     </Toolbar>
                 </AppBar>

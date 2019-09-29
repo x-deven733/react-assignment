@@ -36,7 +36,7 @@ class Login extends Component {
 
   //login button
   handleLogin(event) {
-    if (this.state.username === "deven733" && this.state.password === "12345678") {
+    if (this.state.username === "person123" && this.state.password === "12345678") {
       localStorage.setItem('loggedIn', true);
       this.props.history.push({
         pathname: "/home",
@@ -45,13 +45,13 @@ class Login extends Component {
       this.setState({
         msgOpen: true,
         snackType: 'error',
-        snackMsg: 'Please Enter Your Username!'
+        snackMsg: 'Please Enter Username!'
       })
     } else if (this.state.password === '') {
       this.setState({
         msgOpen: true,
         snackType: 'error',
-        snackMsg: 'Please Enter Your Password!'
+        snackMsg: 'Please Enter Password!'
       })
     }
     else {
@@ -71,8 +71,8 @@ class Login extends Component {
     })
   }
 
-  componentDidMount(){
-    if(localStorage.getItem('loggedIn')){
+  componentDidMount() {
+    if (localStorage.getItem('loggedIn')) {
       this.props.history.push({
         pathname: "/home",
       })
@@ -82,9 +82,14 @@ class Login extends Component {
   render() {
     const { classes } = this.props;
     return (
+      <div>
+
         <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white' }}>
           <CssBaseline />
           <div className={classes.paper} >
+            <p style={{ textAlign: 'center'}}>
+              <b>Welcome to Personal Finance Manager</b>
+            </p>
             <Typography component="h1" variant="h5" style={{ paddingTop: 10 }}>
               Sign in
           </Typography>
@@ -117,7 +122,7 @@ class Login extends Component {
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                className={classes.login}
                 onClick={this.handleLogin}
               >
                 Log In
@@ -131,6 +136,8 @@ class Login extends Component {
             onClose={() => this.snackClose()}
           />
         </Container>
+      </div>
+
     );
   }
 }

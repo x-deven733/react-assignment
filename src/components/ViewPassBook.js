@@ -19,51 +19,62 @@ class ViewPassBook extends Component {
         };
     }
     componentDidMount() {
+
+        if(!localStorage.getItem('loggedIn')){
+            this.props.history.push({
+                pathname: "/",
+            })
+        }
+        
         localStorage.getItem('data') && this.setState({
             datas: JSON.parse(localStorage.getItem('data')),
         })
     }
 
     handleClear = () => {
-
-        localStorage.clear();
-
+        let keysToRemove = ["data", "totalIncome", "totalExpense", "totalAmount"];
+        for (var key of keysToRemove) {
+            localStorage.removeItem(key);
+        }
         alert("Records Cleared!");
-
         this.setState({
-           datas:0
+            datas: 0
         })
     }
 
-    handleAddTransaction  = () => {
+    handleAddTransaction = () => {
         this.props.history.push({
             pathname: "/transaction_details",
         })
     }
 
-    handleBackToHome = () => {
+    handleHome = () => {
         this.props.history.push({
-            pathname: "/home",
+          pathname:'home'
         })
-    }
+      }
 
     render() {
         const { classes } = this.props;
 
         return (
-            <div className={classes.root}>
+            <div>
                 <CssBaseline />
                 <AppBar color="default" className={classes.appBar}>
                     <Toolbar>
-                        <Typography variant="h6" color="inherit" noWrap>
-                            Passbook
-                        </Typography>
+                        <div className='titlebar-container'>
+                            <Typography variant="h6" noWrap> Passbook 
+                            <Button className={classes.textbutton} onClick={this.handleHome}>Back To Home</Button>
+                            </Typography>
+                            
+
+                        </div>
                     </Toolbar>
                 </AppBar>
                 <main className={classes.passbooklayout}>
                     <Paper className={classes.papers}>
-                        <Typography component="h1" variant="h4" align="center">
-                            Records
+                        <Typography component="h1" variant="h4" align="center" >
+                            <b>Records</b>
                         </Typography>
                         {this.state.datas !== 0 ? (
                             <div>
@@ -93,7 +104,7 @@ class ViewPassBook extends Component {
                                     <Button
                                         type="submit"
                                         fullWidth
-                                        variant="contained"
+                                        variant="text"
                                         color="primary"
                                         className={classes.passbooksubmit}
                                         onClick={this.handleClear}
@@ -109,15 +120,6 @@ class ViewPassBook extends Component {
                                         onClick={this.handleAddTransaction}
                                     >
                                         Add Transaction
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.passbooksubmit}
-                                        onClick={this.handleBackToHome}
-                                    >
-                                        Home
                                     </Button>
                                 </div>
                             </div>
@@ -135,9 +137,11 @@ class ViewPassBook extends Component {
                                     >
                                         Add Transaction
                                     </Button>
+
                                 </div>
                             )}
                     </Paper>
+
                 </main>
             </div>
         );
@@ -150,6 +154,7 @@ const StyledTableCell = withStyles(theme => ({
     head: {
         backgroundColor: '#50d07d',
         color: theme.palette.common.white,
+        fontSize: 15
     },
     body: {
         fontSize: 14,

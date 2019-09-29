@@ -12,11 +12,11 @@ function App() {
     <BrowserRouter basename="/my-finance-manager">
       <div className="App">
         <Switch>
-          <Route path="/" exact component={Login}/>
+          <Route path="/" exact component={Login} />
           <Route path="/home" component={Home} />
-          <Route path="/transaction_details" component={TransactionDetails}/>
-          <Route path="/passbook" component={ViewPassBook}/>
-          <Route path="/monthly_details" component={CurrentMonthDetails}/>
+          <Route path="/transaction_details" component={TransactionDetails} />
+          <Route path="/passbook" component={ViewPassBook} />
+          <Route path="/monthly_details" component={CurrentMonthDetails} />
         </Switch>
       </div>
     </BrowserRouter>

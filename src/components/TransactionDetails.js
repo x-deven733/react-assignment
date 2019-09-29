@@ -17,7 +17,7 @@ class TransactionDetails extends Component {
 
     super(props)
     this.state = {
-      username:'',
+      username: '',
       arr: [],
       income: '',
       expense: '',
@@ -39,7 +39,13 @@ class TransactionDetails extends Component {
 
 
   componentDidMount() {
-    
+
+    if (!localStorage.getItem('loggedIn')) {
+      this.props.history.push({
+        pathname: "/",
+      })
+    }
+
     localStorage.getItem('totalAmount') && this.setState({
       netAmount: JSON.parse(localStorage.getItem('totalAmount')),
     })
@@ -64,24 +70,10 @@ class TransactionDetails extends Component {
     const value = target.value;
     const name = target.name;
 
-    
-      this.setState({
-        [name]: value
-      })
-    
-    // if (name === 'amount') {
-    //   const regexOnlyNumbers = /^[0-9]+(\.[0-9]{1,2})?$/;
-    //   if (event.target.value === '' || regexOnlyNumbers.test(event.target.value)) {
-    //     this.setState({
-    //       [name]: value
-    //     })
-    //   }
-    // }
-    // else {
-    //   this.setState({
-    //     [name]: value
-    //   })
-    // }
+
+    this.setState({
+      [name]: value
+    })
     event.preventDefault();
   }
 
@@ -116,7 +108,7 @@ class TransactionDetails extends Component {
 
       if (this.state.selectedValue === 'expense') {
         amt = parseFloat(this.state.netAmount) - parseFloat(this.state.amount);
-        if (this.state.netAmount === 0 || amt <= 0) {
+        if (this.state.netAmount === 0 || amt < 0) {
           this.setState({
             msgOpen: true,
             snackType: 'error',
@@ -174,7 +166,7 @@ class TransactionDetails extends Component {
         snackMsg: 'Successfully recorded!'
       })
     }
-     event.preventDefault();
+    event.preventDefault();
   }
 
 
@@ -208,18 +200,28 @@ class TransactionDetails extends Component {
     })
   }
 
+  handleHome = () => {
+    this.props.history.push({
+      pathname:'home'
+    })
+  }
+
   render() {
     const { classes } = this.props;
     return (
-      <React.Fragment>
+      <div>
         <CssBaseline />
         <AppBar color="default" className={classes.appBar}>
           <Toolbar>
             <div className='titlebar-container'>
-              <Typography variant="h6" noWrap>Transaction Details </Typography>
+              <Typography variant="h6" noWrap>Transaction Details 
+              <Button className={classes.textbutton} onClick={this.handleHome}>Home</Button>
+              <Button className={classes.textbutton} onClick={this.handleMonthlyDetails}>Current Month Transaction</Button>
+              </Typography>
+
               <div className='titlebar-user-details'>
                 <div>{this.state.username}</div>
-                <div>Amount : ₹ {parseFloat(this.state.netAmount)}</div>
+                <p style={{ fontSize: 16, color: 'green' }}><b>Amount : ₹ {parseFloat(this.state.netAmount)}</b></p>
               </div>
             </div>
           </Toolbar>
@@ -285,6 +287,7 @@ class TransactionDetails extends Component {
               </Grid>
             </Grid>
             <div style={{ flex: 'display', flexDirection: 'row', textAlign: 'center' }}>
+
               <Button
                 type="submit"
                 fullWidth
@@ -298,23 +301,14 @@ class TransactionDetails extends Component {
               <Button
                 type="submit"
                 fullWidth
-                variant="contained"
+                variant="text"
                 color="primary"
                 className={classes.submits}
                 onClick={this.handlepassbook}
               >
-                View Passbook
+                Passbook
               </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submits}
-                onClick={this.handleMonthlyDetails}
-              >
-                Current Month Transaction
-              </Button>
+
             </div>
           </Paper>
           <SnackBar
@@ -324,7 +318,7 @@ class TransactionDetails extends Component {
             onClose={() => this.snackClose()}
           />
         </main>
-      </React.Fragment >
+      </div >
     );
   }
 }

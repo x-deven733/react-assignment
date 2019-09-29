@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {CssBaseline,AppBar,Toolbar,Paper,Typography,Card,CardContent} from '@material-ui/core';
+import { CssBaseline, AppBar, Toolbar, Paper, Typography, Card, CardContent, Button } from '@material-ui/core';
 import { withStyles } from "@material-ui/core/styles";
 import 'date-fns';
 import './style/listcell.css'
@@ -17,54 +17,84 @@ class CurrentMonthDetails extends Component {
             netExpense: ''
         };
     }
-    
-    componentDidMount(){
-          var netincome = 0;
-        var netexpense = 0;
-        if (localStorage.getItem('totalIncome') !== null) {
 
-            var arr1 = JSON.parse(localStorage.getItem('totalIncome'))
-            for (var i in arr1) {
-                netincome = netincome + parseInt(arr1[i])
-            }
+    componentDidMount() {
+
+        if (!localStorage.getItem('loggedIn')) {
+            this.props.history.push({
+                pathname: "/",
+            })
         }
 
+        var netincome = 0;
+        var netexpense = 0;
+        if (localStorage.getItem('totalIncome') !== null) {
+            var arr1 = JSON.parse(localStorage.getItem('totalIncome'))
+            for (var i in arr1) {
+                netincome = netincome + parseFloat(arr1[i])
+            }
+        }
         this.setState({
             netIncome: netincome
         })
-
         if (localStorage.getItem('totalExpense') !== null) {
             var arr2 = JSON.parse(localStorage.getItem('totalExpense'))
             for (var j in arr2) {
-                netexpense = netexpense + parseInt(arr2[j])
+                netexpense = netexpense + parseFloat(arr2[j])
             }
         }
-
         this.setState({
             netExpense: netexpense
         })
     }
 
+    handleHome = () => {
+        this.props.history.push({
+            pathname: 'home'
+        })
+    }
+
+    handlePassbook = () => {
+        this.props.history.push({
+            pathname: "/passbook",
+        })
+    }
+
+    handleTransaction = () => {
+        this.props.history.push({
+            pathname: "/transaction_details",
+        })
+    }
+
+
     render() {
         const { classes } = this.props;
         return (
-            <React.Fragment>
+            <div>
                 <CssBaseline />
                 <AppBar position="absolute" color="default" className={classes.appBar}>
                     <Toolbar>
-
                         <div className='titlebar-container'>
-                            <Typography variant="h6" noWrap>Monthly Details </Typography>
+                            <Typography variant="h6" noWrap>Monthly Details
+                            <Button className={classes.textbutton} onClick={this.handleHome}>Home</Button>
+                                <Button className={classes.textbutton} onClick={this.handleTransaction}>Add Transaction</Button>
+                                <Button className={classes.textbutton} onClick={this.handlePassbook}>Passbook</Button>
+                            </Typography>
                         </div>
-
                     </Toolbar>
                 </AppBar>
-                <main className={classes.layout}>
-                    <Paper className={classes.papers}>
+                <main className={classes.thismonth_layout} style={{ display: 'flex', justifyContent: 'center' }}>
+
+
+
+
+                    <Paper className={classes.thismonth_papers}>
                         <Typography component="h1" variant="h6" align="center">
-                            Details of Current Month
+                            <b>Transaction Details of this Month</b>
                         </Typography>
-                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+
+
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                             <Card className={classes.card}>
                                 <CardContent>
                                     <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -83,15 +113,12 @@ class CurrentMonthDetails extends Component {
                                     <Typography variant="h5" component="h2">
                                         Rs. {this.state.netExpense}
                                     </Typography>
-
                                 </CardContent>
                             </Card>
                         </div>
-
                     </Paper>
-
                 </main>
-            </React.Fragment >
+            </div>
         );
     }
 }
