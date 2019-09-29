@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import 'date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import './style/listcell.css'
+import './style/style.css'
 import styles from './styles';
 import SnackBar from './SnackBar';
 
@@ -107,7 +107,9 @@ class TransactionDetails extends Component {
       month = this.state.date.getMonth() + 1;
 
       if (this.state.selectedValue === 'expense') {
-        amt = parseFloat(this.state.netAmount) - parseFloat(this.state.amount);
+
+        //handles expenses from 0 balance or insufficient balance cases..
+        amt = parseFloat(this.state.netAmount) - parseFloat(this.state.amount); 
         if (this.state.netAmount === 0 || amt < 0) {
           this.setState({
             msgOpen: true,
@@ -130,6 +132,7 @@ class TransactionDetails extends Component {
           localStorage.setItem('totalAmount', amt)
         }
       } else {
+        //storing the transaction details in a localsTorage..
         amt = parseFloat(this.state.netAmount) + parseFloat(this.state.amount);
         obj = {
           'income': this.state.amount,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackBarWrapper from './SnackBarWrapper'
 
+//a snckbar component
 
 export default function SnackBar(props) {
 

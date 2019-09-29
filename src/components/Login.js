@@ -23,7 +23,7 @@ class Login extends Component {
     this.handleInputData = this.handleInputData.bind(this);
   }
 
-  // setting the values of when user enters the details
+  // setting the values when user enters the details
   handleInputData(event) {
     const target = event.target;
     const value = target.value;
@@ -71,6 +71,7 @@ class Login extends Component {
     })
   }
 
+  //a check to maintain the state of login..if everything is fine then the user will navigated to the 'home' page
   componentDidMount() {
     if (localStorage.getItem('loggedIn')) {
       this.props.history.push({
@@ -83,7 +84,6 @@ class Login extends Component {
     const { classes } = this.props;
     return (
       <div>
-
         <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white' }}>
           <CssBaseline />
           <div className={classes.paper} >

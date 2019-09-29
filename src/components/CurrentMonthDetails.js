@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { CssBaseline, AppBar, Toolbar, Paper, Typography, Card, CardContent, Button } from '@material-ui/core';
 import { withStyles } from "@material-ui/core/styles";
 import 'date-fns';
-import './style/listcell.css'
+import './style/style.css'
 import styles from './styles';
 
 
@@ -84,16 +84,10 @@ class CurrentMonthDetails extends Component {
                     </Toolbar>
                 </AppBar>
                 <main className={classes.thismonth_layout} style={{ display: 'flex', justifyContent: 'center' }}>
-
-
-
-
                     <Paper className={classes.thismonth_papers}>
                         <Typography component="h1" variant="h6" align="center">
                             <b>Transaction Details of this Month</b>
                         </Typography>
-
-
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                             <Card className={classes.card}>
                                 <CardContent>

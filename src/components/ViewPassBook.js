@@ -31,6 +31,7 @@ class ViewPassBook extends Component {
         })
     }
 
+    //clearing the transaction details 
     handleClear = () => {
         let keysToRemove = ["data", "totalIncome", "totalExpense", "totalAmount"];
         for (var key of keysToRemove) {
@@ -66,8 +67,6 @@ class ViewPassBook extends Component {
                             <Typography variant="h6" noWrap> Passbook 
                             <Button className={classes.textbutton} onClick={this.handleHome}>Back To Home</Button>
                             </Typography>
-                            
-
                         </div>
                     </Toolbar>
                 </AppBar>

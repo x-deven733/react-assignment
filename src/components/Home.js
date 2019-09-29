@@ -9,6 +9,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 
 class Home extends Component {
 
+    //if user can find the login state in the localstorage, then the user will be redirected to the sign-in page
     componentDidMount(){
         if(!localStorage.getItem('loggedIn')){
             this.props.history.push({
@@ -35,6 +36,7 @@ class Home extends Component {
         })
     }
 
+    //removing the login state when the user pressed the logout button..
     handleLogout = () => {
         localStorage.removeItem('loggedIn');
        this.props.history.push({
